@@ -2,18 +2,20 @@
 public class Solution {
 
     public int jump(int[] nums) {
-    	int[] dp = new int[nums.length];
-    	dp[0] = 0;
-    	for(int endPoint = 1;endPoint<nums.length;endPoint++){
-    		int	pos = endPoint-1;
-    		int i = 1;
-    		for(;0<=pos;pos--,i++){
-    			if(i<nums[pos]){
-    				//dp.length
-    				dp[endPoint] = dp[pos]+1;
-    			}
-    		}
-    	}
-    	return dp[nums.length-1];
+    	int n = nums.length;
+		if(n<2)return 0;
+	 	int level=0,currentMax=0,i=0,nextMax=0;
+
+	 	while(i<=currentMax){		//nodes count of current level>0
+			level++;
+			for(;i<=currentMax;i++){	//traverse current level , and update the max reach of next level
+				nextMax=Math.max(nextMax,nums[i]+i);
+				if(nextMax>=n-1)return level;   // if last element is in level+1,  then the min jump=level 
+			}
+			currentMax=nextMax;
+	 	}
+	 	return 0;
     }
 }
+
+
