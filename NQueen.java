@@ -1,64 +1,74 @@
-package leetcode;
-/**
- * @author Cradle Lee
- * @howToUse new NQueen(N).NQueenList
- * @outputFormat NQueenList is a ArrayList<ArrayList<Integer>>
- * and it has all the N Queens satisfied permutation.
- */
-import java.util.ArrayList;
-import java.util.LinkedList;
+public class Solution {
+	int n = 0;
+    public List<List<String>> solveNQueens(int n) {
+    	// ini
+        this.n = n;
+        List<List<String>> ans = new ArrayList<List<String>>();
+        int[] backup = new int[n];
+        for(int i = 0;i<n;i++){
+        	backup[i] = i+1;
+        }
 
-public class NQueen {
-	ArrayList<ArrayList<Integer>> NQueenList;
-	public NQueen(int N){
-		//===the part of permutation creator
-		ArrayList<Integer> prefix = new ArrayList<Integer>();
-		LinkedList<Integer> input = new LinkedList<Integer>();
-		for(int i=0;i<N;i++){
-			input.add(i);
-		}
-		ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
-		
-		Permutation.Creator(prefix, input, N, result);
-		//=========================================
-		long total = factorial(N);
-		NQueenList = new ArrayList<ArrayList<Integer>>();
-		for(int th=0;th<total;th++){//这里面的每一次处理是对一次排列的处理
-			ArrayList<Integer> permu = result.get(th);
-			if(check(permu))
-				NQueenList.add(permu);
-		}
-	}
-	
-	long factorial(int n){
-		long prod=1;
-		for(int i=1;i<=n;i++){
-			prod*=i;
-		}
-		return prod;
-	}
-	
-	boolean check(ArrayList<Integer> permu){//检查该排列是否满足N皇后规则
-		int N=permu.size();
-		for(int m=0,n=0;m<N;m++){
-			int sum=0;
-			for(int i=m,j=n;i<N&&j<N;i++,j++){//一次斜线检查
-				if(j==permu.get(i))
-					sum+=1;
-			}
-			if(sum>1)
-				return false;
-		}
-		
-		for(int m=1,n=0;n<N;n++){
-			int sum=0;
-			for(int i=m,j=n;i<N&&j<N;i++,j++){//一次斜线检查
-				if(j==permu.get(i))
-					sum+=1;
-			}
-			if(sum>1)
-				return false;
-		}
-		return true;
-	}
+        boolean changed = true;
+        while(true==changed){
+        	if(isValid(backup)){
+        		ans.add(transforming(backup));
+        	}
+        	changed = nextPermutation(backup);
+        }
+        return ans;
+    }
+    private List<String> transforming(int[] input){
+    	List<String> ans = new ArrayList<String>();
+    	for(int in:input){
+    		String element = new String();
+    		for(int i = 1;i<=n;i++){//based on 1
+    			if(in==i){
+    				element+="Q";
+    			}
+    			else {
+    				element+=".";
+    			}
+    		}
+    		ans.add(element);
+    	}
+    	return ans;
+    }
+
+    private void swap(int[] nums,int i,int j){
+    	int temp = nums[i];
+    	nums[i] = nums[j];
+    	nums[j] = temp;
+    }
+    
+    private boolean nextPermutation(int[] nums){
+    	boolean changed = false;
+    	for(int i=nums.length-1;i>=1;i--){
+    		if(nums[i-1]<nums[i]){
+    			for(int j=nums.length-1;j>=1;j--){
+    				if(nums[i-1]<nums[j]){
+    					swap(nums,i-1,j);
+    					changed = true;
+    					Arrays.sort(nums,i,nums.length);
+    					break;
+    				}
+    			}
+    			break;
+    		}
+    	}
+
+    	return changed;
+    }
+
+    private boolean isValid(int[] backup){
+    	for(int ro2 = 1;ro2<n;ro2++){
+
+    		for(int ro1 = 0;ro1<ro2;ro1++){
+    			if(Math.abs(backup[ro2]-backup[ro1])==Math.abs(ro2-ro1)){
+    				return false;
+    			}
+    		}
+    	}
+    	return true;
+    }
 }
