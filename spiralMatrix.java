@@ -1,47 +1,41 @@
 public class Solution {
-	int totalRow;
-    int totalCol;
-    final int ROW = 0;
-    final int COL = 1;
     public List<Integer> spiralOrder(int[][] matrix) {
-    	int totalRow = matrix.length-1;
-    	int totalCol = matrix[0].length-1;
-        List<Integer> ans = new List<Integer>();
-        int[] startPosition = {0,0};
-    	int[] rightDown = {totalRow-startPosition[ROW] ,totalCol-startPositon[ROW]};
-
-        while(startPosition[ROW]<=rightDown[ROW]&&startPosition[COL]<=rightDown[COL]){
-        	ans.addAll(rectRead(matrix,startPosition,rightDown));
-        	startPosition = {startPosition[ROW]+1,startPosition[COL]+1};
-        	rightDown = {totalRow-startPosition[ROW] ,totalCol-startPositon[COL]};
+    	List<Integer> ans = new ArrayList<Integer>();
+    	if(matrix.length==0){
+    		return ans;
+    	}
+    	int totalRow = matrix.length;
+    	int totalCol = matrix[0].length;
+        //the first row
+        for (int i = 0;i<matrix[0].length ;i++ ) {
+            ans.add(matrix[0][i]);
         }
+        
+        //to low and to the right side is positive
+        int[][] direct = {{1,0},{0,-1},{-1,0},{0,1}};
+        //how many integers are there needed to be added to the ans
+        int total = (matrix.length-1)*matrix[0].length;
+        //增加转向次数、向前步数的概念
+        int turnTimes = 0;
+        int[] forwardSteps = {totalRow-1,totalCol-1};
+        int row = 0;
+        int col = matrix[0].length-1;
+        int stepCount = forwardSteps[0];
+        for (;total>0;total--) {
+            --stepCount;
+            row = row+direct[turnTimes][0];
+            col = col+direct[turnTimes][1];
+            ans.add(matrix[row][col]);
+            //the difference between forwardSteps and step count 
+            if(stepCount==0){
+                --forwardSteps[turnTimes%2]; 
+                turnTimes = (turnTimes+1)%4;
+                stepCount = forwardSteps[turnTimes%2];
+            }
+        }
+
+        return ans;
+        
     }
-
-    private List<Integer> rectRead(int[][] matrix, int[] startPosition,int[] rightDown){
-    	List<Integer> rect = new List<Integer>();
-    	
-    	int[] rightUp = {startPosition[ROW], totalCol-startPositon[COL]};
-    	//rightDown is the input
-    	int[] leftDown = {totalRow-startPosition[ROW], startPosition[COL]};
-    	int[] leftUp = {startPosition[ROW]+1, startPosition[COL]};
-    	// left to right
-    	for(int j = startPosition[COL]; j<=rightUp[COL];j++){
-    		rect.add(matrix[startPosition[ROW]][j]);
-    	}
-    	// up to down
-    	for(int i = rightUp[ROW];i<=rightDown[ROW];i++){
-    		rect.add(matrix[i][rightDown[COL]]); 
-    	}
-
-    	// right to left
-    	for(int j = rightDown[COL]; j>=leftDown[COL];j--){
-    		rect.add(matrix[leftDown[ROW]][j]);
-    	}
-    	
-    	// down to up
-    	for(int i = leftDown[ROW];i>=leftUp[ROW];i--){
-    		rect.add(matrix[i][leftDown[COL]]); 
-    	}
-
-    }
+    
 }
