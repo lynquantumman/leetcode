@@ -1,0 +1,25 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public TreeNode sortedArrayToBST(int[] nums) {
+        return sortedArrayToBSTRecursive(nums,0,nums.length);
+    }
+
+    private TreeNode sortedArrayToBSTRecursive(int[] nums, int start, int end){
+    	if(end-start<=0){
+    		return null;
+    	}
+    	int center = (end+start)/2;
+    	TreeNode ans = new TreeNode(nums[center]);
+    	ans.left = sortedArrayToBSTRecursive(nums,start,center);
+    	ans.right = sortedArrayToBSTRecursive(nums,center+1,end);
+    	return ans;
+    }	
+}
