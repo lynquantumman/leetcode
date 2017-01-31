@@ -1,6 +1,6 @@
 /**
 *Given a list, rotate the list to the right by k places, where k is non-negative.
-*
+*1->2
 *For example:
 *Given 1->2->3->4->5->NULL and k = 2,
 *return 4->5->1->2->3->NULL.
@@ -13,24 +13,38 @@
  */
 public class Solution {
     public ListNode rotateRight(ListNode head, int k) {
-        if(0==k){
+        if(0==k||null==head){
             return head;
         }
+       
         ListNode temp = head;
-        for (int i = 1;temp!=null && i<=k;i++) {
+        // 2 situations
+        // k is less than the length of the list
+        // k is no less than the lenght of the list
+        int i = 0;
+        while (i<k) {
         	temp = temp.next;
-        }
-        ListNode dummy = temp;
-        if(temp==null){
-            return head;
-        }
-        while (temp.next!=null) {
-        	temp = temp.next;
-        }
-        temp.next = head;
-        head = dummy.next;
-        dummy.next = null;
-        return head;
+        	
+        	i++;
+        	if (null==temp) {
+        		k = k%(i);
+        		i = 0;
+        		temp = head;
+        	}
 
+        }
+        ListNode fast = temp;
+       	ListNode slow = head;
+
+       	while(null!=fast.next){
+       		fast = fast.next;
+       		slow = slow.next;
+       	}
+
+
+       	fast.next = head;
+       	head = slow.next;
+       	slow.next = null;
+       	return head;
     }
 }
