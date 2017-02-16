@@ -1,0 +1,15 @@
+/*
+* It is allowed that numbers can be duplicated for twice.
+*/
+
+public class Solution {
+    public int removeDuplicates(int[] nums) {
+    	int i = 0;
+        for (int newNumber:nums) {
+        	if (i<2 || nums[i-2]<newNumber) {
+        		nums[i++] = newNumber;
+        	}
+        }
+        return i;
+    }
+}

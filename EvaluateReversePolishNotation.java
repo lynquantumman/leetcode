@@ -22,9 +22,10 @@ public class Solution {
 	        		ans = firstNumber/secondNumber
 	        	}
 	        	stk.push(ans);
-	        	
+
 	        }
     	}
+    	return stk.pop();
         
     }
 }

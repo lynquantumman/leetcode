@@ -13,6 +13,32 @@
 
 public class Solution {
     public String simplifyPath(String path) {
-        
+        String[] fragments = path.split("/",0);
+        LinkedList<String> stk = new LinkedList<String>();
+        for (String each:fragments) {
+        	if ("".equals(each)||".".equals(each)) {
+        		continue;
+        	}
+        	else if ("..".equals(each)) {
+        		if (!stk.isEmpty()) {
+        			stk.pop();
+        		}
+        		
+        	}
+        	else {
+        		stk.push(each);
+        	}
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = stk.size()-1;i>=0;i--) {
+        	sb.append("/");
+        	sb.append(stk.get(i));
+        }
+        if (sb.length()==0) {
+        	sb.append("/");
+        }
+        String ans = new String(sb);
+        return ans;
     }
 }
