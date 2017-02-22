@@ -1,0 +1,22 @@
+public class Solution {
+    public int rob(int[] nums) {
+    	int len = nums.length;
+    	if (len==0) {
+    		return 0;
+    	}
+    	else if (len==1) {
+    		return nums[0];
+    	}
+        else{
+        	if (len>=3) {
+        		nums[2] = nums[0]+nums[2];
+        	}
+        	
+        	for (int i = 3;i<len;i++ ) {
+        		nums[i] = Math.max(nums[i-2],nums[i-3])+nums[i];
+        	}
+        }
+        return Math.max(nums[len-1],nums[len-2]);
+
+    }
+}
