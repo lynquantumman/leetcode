@@ -1,18 +1,17 @@
 public class Solution {
     public boolean canFinish(int numCourses, int[][] prerequisites) {
         // delete lines are [-1,-1]
-
-        TreeSet<Integer> startSet = startPointSift(prerequisites);
+    	TreeSet<Integer> startSet = new TreeSet<Integer>();
+        startPointSift(prerequisites, startSet);
         int toRemoveStartPoint = 0;
         while(!startSet.isEmpty()){
         	while(!startSet.isEmpty()){
         		
         		toRemoveStartPoint = startSet.pollFirst();
         		removeSpecificLine(prerequisites,toRemoveStartPoint);
-        			
-        		
+
         	}
-        	startSet = startPointSift(prerequisites); 
+        	startPointSift(prerequisites,startSet); 
         }
         return isEmpty(prerequisites);
     }
@@ -21,15 +20,15 @@ public class Solution {
     	for (int i =0;i<prerequisites.length ;i++ ) {
     		if(prerequisites[i][1]==ele){
     			prerequisites[i][0] = -1;
-    			prerequisites[i][1] = -1; 
+    			
     		}
     			
     	}
 
     }
 
-    private TreeSet<Integer> startPointSift(int[][] prerequisites){
-    	TreeSet<Integer> startSet = new TreeSet<Integer>();
+    private void startPointSift(int[][] prerequisites, TreeSet<Integer> startSet){
+    	
     	TreeSet<Integer> endSet = new TreeSet<Integer>();
     	for (int i = 0;i<prerequisites.length ;i++ ) {
     		if (prerequisites[i][0]!=-1) {
@@ -39,7 +38,7 @@ public class Solution {
     		
     	}
     	startSet.removeAll(endSet);
-    	return startSet;
+    	
     }
 
     private boolean isEmpty(int[][] prerequisites){
