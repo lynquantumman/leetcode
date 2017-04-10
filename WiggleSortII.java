@@ -4,7 +4,10 @@ public class Solution{
 	public void wiggleSort(int[] nums){
 		this.len = nums.length;
 		this.midPos = (len-1)/2;
-		System.out.println(indexMapping(4)+"=====");
+		for (int i = 0;i<len ;i++ ) {
+			System.out.println(indexMapping(i)+"=====");
+		}
+		
 		findKthElement(nums,midPos,0,len);
 
 	}
@@ -26,7 +29,7 @@ public class Solution{
 // 		if (k<left||k>=right) {
 // 			throw new RunTimeException();
 // 		}
-		if (k==left) {
+		if (right-left==1&&k==left) {
 			return nums[indexMapping(left)];
 		}
 		int first = left+1;
@@ -40,8 +43,9 @@ public class Solution{
 				last--;
 			}
 			swap(nums,first,last);
+			System.out.println("hello,world first"+first+"last==="+last);
 		}
-		System.out.println("hello,world");
+		
 		if (cmp>nums[indexMapping(first)]) {
 			swap(nums,left,first);
 			if (k==first) {
@@ -54,11 +58,13 @@ public class Solution{
 		}
 		else {//when cm<=nums[indexMapping() first]
 			swap(nums,left,first-1);
+			System.out.println("hello,world left"+left+"first-1==="+(first-1));
 			if (k==first-1) {
 				return nums[indexMapping(k)];
 			}else if (k<first-1) {
 				return findKthElement(nums,k,left,first-1);
 			}else{//first-1<k
+				System.out.println("first-1<k");
 				return findKthElement(nums,k,first,right);
 			}
 		}
